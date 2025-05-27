@@ -1,65 +1,70 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0e0e0e;
+    color: white;
+    overflow-x: hidden;
+}
+
+.hero {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: #aaa;
+}
+
+.cards-container {
     display: flex;
     justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 2rem;
+}
+
+.card {
+    width: 280px;
+    height: 180px;
+    background: linear-gradient(145deg, #1f1f1f, #292929);
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
     align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-    margin: 0;
-}
-
-.calculator {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    background-color: #fff;
-}
-
-.display {
-    background-color: #222;
-    color: #fff;
-    font-size: 2em;
-    text-align: right;
-    padding: 20px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    padding: 20px;
-}
-
-button {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1.5em;
-    padding: 20px;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    transition: transform 0.1s ease;
+    perspective: 1000px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    position: relative;
 }
 
-button:hover {
-    background-color: #e0e0e0;
+.card::before {
+    content: attr(data-title);
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
 
-button:active {
-    background-color: #ccc;
-}
-
-button.operator {
-    background-color: #ff9500;
-    color: #fff;
-}
-
-button.operator:hover {
-    background-color: #e08900;
-}
-
-button.operator:active {
-    background-color: #c07800;
+.card::after {
+    content: attr(data-desc);
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    font-size: 0.95rem;
+    color: #ccc;
 }
