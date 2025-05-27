@@ -64,6 +64,7 @@ window.addEventListener('mousemove', (e) => {
   mouse.x = e.clientX;
   mouse.y = e.clientY;
   lastMoveTime = Date.now();
+  isMouseInside = true;
 });
 
 window.addEventListener('resize', () => {
@@ -75,33 +76,74 @@ window.addEventListener('resize', () => {
 const cards = document.querySelectorAll('.card');
 let mouseX = 0;
 let mouseY = 0;
+let isMouseInside = true;
+let resetProgress = 0;
 
 window.addEventListener('mousemove', (e) => {
   mouseX = e.clientX;
   mouseY = e.clientY;
+  isMouseInside = true;
+});
+
+window.addEventListener('mouseout', () => {
+  isMouseInside = false;
 });
 
 function animateCardTilt() {
   const winW = window.innerWidth;
   const winH = window.innerHeight;
-
   const offsetX = (mouseX / winW - 0.5) * 2;
   const offsetY = (mouseY / winH - 0.5) * 2;
+  const isMobile = winW <= 768;
 
   cards.forEach(card => {
     const isHover = card.matches(':hover');
-    const multiplier = isHover ? 35 : 18;
+    const multiplier = isHover ? (isMobile ? 20 : 35) : (isMobile ? 8 : 18);
 
-    card.style.transform = `
-      perspective(1000px)
-      rotateX(${ -offsetY * multiplier }deg)
-      rotateY(${ offsetX * multiplier }deg)
-      translateZ(${isHover ? 40 : 20}px)
-    `;
+    if (isMouseInside) {
+      resetProgress = 0;
+      const rx = -offsetY * multiplier;
+      const ry = offsetX * multiplier;
+      const tz = isHover ? 40 : 20;
+      card.style.transition = 'transform 0.15s ease';
+      card.style.transform = `
+        perspective(1000px)
+        rotateX(${rx}deg)
+        rotateY(${ry}deg)
+        translateZ(${tz}px)
+      `;
+      card.dataset.lastRX = rx.toFixed(2);
+      card.dataset.lastRY = ry.toFixed(2);
+      card.dataset.lastZ = tz.toFixed(2);
+    } else {
+      const lastRX = parseFloat(card.dataset.lastRX || 0);
+      const lastRY = parseFloat(card.dataset.lastRY || 0);
+      const lastZ  = parseFloat(card.dataset.lastZ || 0);
+
+      resetProgress = Math.min(resetProgress + 0.05, 1);
+      const eased = easeOutCubic(resetProgress);
+
+      const rx = (1 - eased) * lastRX;
+      const ry = (1 - eased) * lastRY;
+      const tz = (1 - eased) * lastZ;
+
+      card.style.transition = 'transform 0.4s ease';
+      card.style.transform = `
+        perspective(1000px)
+        rotateX(${rx}deg)
+        rotateY(${ry}deg)
+        translateZ(${tz}px)
+      `;
+    }
   });
 
   requestAnimationFrame(animateCardTilt);
 }
+
+function easeOutCubic(t) {
+  return 1 - Math.pow(1 - t, 3);
+}
+
 animateCardTilt();
 
 // --- TITLE FLOAT EFFECT (Gentle Autonomous Motion) ---
@@ -125,3 +167,13 @@ function animateTitleFloat() {
   requestAnimationFrame(animateTitleFloat);
 }
 animateTitleFloat();
+
+// --- MOBILE MENU TOGGLE ---
+const hamburger = document.querySelector('.hamburger');
+const menu = document.querySelector('.menu');
+
+if (hamburger && menu) {
+  hamburger.addEventListener('click', () => {
+    menu.classList.toggle('active');
+  });
+}
