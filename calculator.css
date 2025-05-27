@@ -1,54 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap');
+
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #0e0e0e;
-    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    background: linear-gradient(135deg, #f2e8dc, #f9f4ef, #f5e4d7);
+    color: #3b2f2f;
     overflow-x: hidden;
+}
+
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+}
+
+/* 👇 Title that floats gently in space */
+#floating-title {
+    display: inline-block;
+    transform-style: preserve-3d;
+    font-size: 3rem;
+    color: #4a3f35;
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    will-change: transform;
+    transition: transform 0.1s ease;
 }
 
 .hero {
     text-align: center;
-    padding: 4rem 2rem;
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 1rem;
+    padding: 5rem 2rem 3rem;
 }
 
 .hero p {
-    font-size: 1.25rem;
-    color: #aaa;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: #6d5c4d;
+    max-width: 600px;
+    margin-inline: auto;
 }
 
 .cards-container {
     display: flex;
-    justify-content: center;
-    gap: 2rem;
     flex-wrap: wrap;
-    padding: 2rem;
+    gap: 2rem;
+    justify-content: center;
+    padding: 3rem;
 }
 
 .card {
-    width: 280px;
-    height: 180px;
-    background: linear-gradient(145deg, #1f1f1f, #292929);
+    width: 300px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid #e3d5c8;
     border-radius: 20px;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.1rem;
-    transition: transform 0.1s ease;
-    perspective: 1000px;
-    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(80, 70, 60, 0.1);
     position: relative;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease, box-shadow 0.3s ease;
+    padding: 1rem;
+    will-change: transform;
 }
 
 .card::before {
@@ -56,8 +74,9 @@ body {
     position: absolute;
     top: 20px;
     left: 20px;
+    font-size: 1.3rem;
     font-weight: bold;
-    font-size: 1.2rem;
+    color: #4a3f35;
 }
 
 .card::after {
@@ -66,5 +85,9 @@ body {
     bottom: 20px;
     left: 20px;
     font-size: 0.95rem;
-    color: #ccc;
+    color: #6d5c4d;
+}
+
+.card:hover {
+    box-shadow: 0 10px 40px rgba(200, 150, 100, 0.4), 0 0 20px rgba(255, 230, 200, 0.5);
 }
