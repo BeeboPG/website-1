@@ -177,3 +177,14 @@ if (hamburger && menu) {
     menu.classList.toggle('active');
   });
 }
+
+document.addEventListener('click', (e) => {
+  const menu = document.querySelector('.menu');
+  const burger = document.querySelector('.hamburger');
+
+  if (menu.classList.contains('active') &&
+      !menu.contains(e.target) &&
+      !burger.contains(e.target)) {
+    menu.classList.remove('active');
+  }
+});
